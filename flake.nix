@@ -49,7 +49,8 @@
 
             # !=== DISKO CONFIG ===!
             # BY DEFAULT, DISKO IS CONFIGURED FOR EXT4 FS FOR UEFI SYSTEMS (NO DUAL BOOT !)
-            # OFCOURSE, CHANGE IT TO FS LAYOUT OF YOUR CHOICE
+            # OFCOURSE, CHANGE IT TO FS LAYOUT OF YOUR CHOICE.
+            # ESPECIALLY IF YOU ARE MIGRATING TO NUCLEUS ARCHITECTURE.
             storageDevice = "/dev/name";
             swapSize = "4G"; # size of swap partition
 
