@@ -8,6 +8,10 @@
             url = "github:nix-community/home-manager/release-26.05";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+        disko = {
+            url = "github:nix-community/disko/master";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
         import-tree.url = "github:denful/import-tree";
     };
 
@@ -16,6 +20,7 @@
             self,
             nixpkgs,
             nixpkgs-unstable,
+            disko,
             homeManager,
             ...
         }@inputs:
@@ -75,6 +80,8 @@
                             };
                         };
                     }
+                    disko.nixosModules.disko
+                    ./modules/common/disko.nix
                 ];
             };
         };
