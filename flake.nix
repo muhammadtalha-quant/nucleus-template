@@ -8,6 +8,7 @@
             url = "github:nix-community/home-manager/release-26.05";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+        import-tree.url = "github:denful/import-tree";
         disko = {
             url = "github:nix-community/disko/master";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -27,8 +28,14 @@
             # !=== SYSTEM CONFIG ===!
             userName = "YOUR_PREFERRED_USER_NAME";
             hostName = "YOUR_PREFERRED_HOST_NAME";
+            # THE GIVEN HASH RESEMBLES THE PASSWORD '0', AND IS USED FOR BOTH ROOT AND USER ACCOUNT.
+            # TO GENERATE A NEW HASH, IN YOUR TERMINAL TYPE THE FOLLOWING COMMAND WITHOUT THE '$'
+            # $ mkpasswd -m yescrypt
+            # YOU WILL BE PROMPTED FOR PASSWORD, ENTER YOUR DESIRED PASSWORD, AND THEN REPLACE
+            # THE FOLLOWING HASH WITH THE GENERATED ONE.
+            hashedPassword = "$y$j9T$hbguh04FZh1JSM8nYVXS0.$9yG.bzlFyYT2NcDEKwxPmZuyN1Cz91DMpyewyfQAyM5";
             timeZone = "YOUR_REGION/YOUR_CITY";
-            locale = "en_US.UTF-8"; # CHANGE IT IF YOU WANT, ENGLISH IS FINE FOR MANY USERS
+            locale = "en_US.UTF-8"; # CHANGE IT IF YOU WANT, ENGLISH IS FINE FOR MANY USERS.
 
             # !=== FLAKE CONFIG ===!
             system = "x86_64-linux";
@@ -38,7 +45,7 @@
 
             # !=== USER CONFIG ===!
             realName = "YOUR_REAL_NAME";
-            # your user configuration, that you would pass down to home manager
+            # your user configuration, that you would like pass down to home manager as well.
 
             # !=== DISKO CONFIG ===!
             # BY DEFAULT, DISKO IS CONFIGURED FOR EXT4 FS FOR UEFI SYSTEMS (NO DUAL BOOT !)
@@ -56,6 +63,7 @@
                     inherit userName;
                     inherit realName;
                     inherit hostName;
+                    inherit hashedPassword;
                     inherit timeZone;
                     inherit configDirectory;
                     inherit storageDevice;
