@@ -9,10 +9,6 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
         import-tree.url = "github:denful/import-tree";
-        disko = {
-            url = "github:nix-community/disko/master";
-            inputs.nixpkgs.follows = "nixpkgs";
-        };
     };
 
     outputs =
@@ -21,7 +17,6 @@
             nixpkgs,
             nixpkgs-unstable,
             homeManager,
-            disko,
             ...
         }@inputs:
         let
@@ -47,13 +42,6 @@
             realName = "YOUR_REAL_NAME";
             # your user configuration, that you would like pass down to home manager as well.
 
-            # !=== DISKO CONFIG ===!
-            # BY DEFAULT, DISKO IS CONFIGURED FOR EXT4 FS FOR UEFI SYSTEMS (NO DUAL BOOT !)
-            # OFCOURSE, CHANGE IT TO FS LAYOUT OF YOUR CHOICE.
-            # ESPECIALLY IF YOU ARE MIGRATING TO NUCLEUS ARCHITECTURE.
-            storageDevice = "/dev/name";
-            swapSize = "4G"; # size of swap partition
-
             # !=== ENVIRONMENT CONFIG ===!
             configDirectory = "/home/${userName}/EXAMPLE/";
         in
@@ -67,9 +55,7 @@
                     inherit hashedPassword;
                     inherit timeZone;
                     inherit configDirectory;
-                    inherit storageDevice;
                     inherit locale;
-                    inherit swapSize;
                     inherit pkgs-unstable;
                     inherit inputs;
                 };
@@ -89,8 +75,6 @@
                             };
                         };
                     }
-                    disko.nixosModules.disko
-                    ./modules/common/disko.nix
                 ];
             };
         };
