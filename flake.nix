@@ -43,6 +43,12 @@
             # from the generated hardware-configuration.nix
             pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
 
+            # !=== DISKO CONFIG ===!
+            # BY DEFAULT, DISKO IS CONFIGURED FOR EXT4 FS FOR UEFI SYSTEMS (NO DUAL BOOT !)
+            # OFCOURSE, CHANGE IT TO FS LAYOUT OF YOUR CHOICE
+            storageDevice = "/dev/name";
+            swapSize = "4G"; # size of swap partition
+
             # !=== USER CONFIG ===!
             realName = "YOUR_REAL_NAME";
             # your user configuration, that you would like pass down to home manager as well.
@@ -59,6 +65,8 @@
                     inherit hostName;
                     inherit hashedPassword;
                     inherit timeZone;
+                    inherit storageDevice;
+                    inherit swapSize;
                     inherit configDirectory;
                     inherit locale;
                     inherit pkgs-unstable;
