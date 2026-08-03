@@ -12,6 +12,7 @@
     - [Migrating After Fresh Installation of NixOS](#migrating-after-fresh-installation-of-nixos)
       - [Clone The Template Repository](#clone-the-template-repository-1)
       - [Make Changes According to Your Current System State](#make-changes-according-to-your-current-system-state)
+  - [Acknowledgments](#acknowledgments)
   - [LICENSE](#license)
 
 <!--toc:end-->
