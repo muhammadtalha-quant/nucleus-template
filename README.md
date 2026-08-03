@@ -5,6 +5,10 @@
 - [Nucleus Architecture](#nucleus-architecture)
   - [Tech Stack](#tech-stack)
   - [Tree Structure](#tree-structure)
+  - [Core Concepts](#core-concepts)
+    - [Common](#common)
+    - [Features](#features)
+    - [Hosts](#hosts)
   - [Getting Started](#getting-started)
     - [Coming to NixOS From Other Distributions](#coming-to-nixos-from-other-distributions)
       - [Clone The Template Repository](#clone-the-template-repository)
@@ -18,13 +22,14 @@
 
 <!--toc:end-->
 
-Nucleus architecture is a new and unusal way to declaratively configure your
-NixOS using flakes. It inspires from dendritic pattern without using
+Nucleus Architecture is a new and unusal way to declaratively configure NixOS
+using flakes. It is inspired from dendritic pattern but without using
 [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or any
 complex frameworks like [**denful/den**](https://github.com/denful/den) and
 [**numtide/flake-utils**](https://github.com/numtide/flake-utils). It is my
-approach to configure NixOS using flake, keeping the configuration dendritic and
-modular and also separating reusable parts from host configuration.
+approach to configure NixOS using flake, keeping the configuration
+dendritic-like and modular and also separating reusable parts from host
+configuration.
 
 > [!CAUTION]
 > This architecture is strictly designed for personal NixOS configurations. For
@@ -34,7 +39,7 @@ modular and also separating reusable parts from host configuration.
 
 ## Tech Stack
 
-The nucleus architecture primarily uses flakes as the main tech stack, with the
+The nucleus architecture primarily uses flakes as the main foundation, with the
 following flakes as core dependencies.
 
 - _**import-tree**_: used for recursively importing *.nix files
@@ -153,6 +158,10 @@ nano flake.nix
 
 - Run disko to handle formatting, partitioning and mounting of your disk.
 
+> [!WARNING]
+> The disko command will destroy the target disk according to your
+> configuration. Verify your disk layout before running it.
+
 ```bash
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount -f .#YOUR_PREFERRED_HOST_NAME
 ```
@@ -175,7 +184,8 @@ Migration after fresh installation of NixOS is relatively simple.
 #### Clone The Template Repository
 
 > [!IMPORTANT]
-> Make sure you have `git` installed on your system.
+> Make sure you have `git` installed on your system. Before migrating, it is
+> important to skim atleast every nix file of the repository.
 
 - Open your default terminal, and paste the following command
 
@@ -192,17 +202,18 @@ rm -rf .git # remove repo metadata to make it your own.
 rm -frv modules/features/configuration/*
 rm -frv modules/hosts/YOUR_PREFERRED_HOST_NAME/*
 mv /etc/nixos/configuration.nix modules/features/configuration/
+nano modules/features/configuration/configuration.nix # import default.nix from your host
 mv /etc/nixos/hardware-configuration.nix modules/hosts/YOUR_PREFERRED_HOST_NAME/
 mv modules/hosts/YOUR_PREFERRED_HOST_NAME modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION
 nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix # remove fileSystems attrs.
 nano flake.nix # remove stuff you don't need, modularize your system slowly.
-nixos-rebuild-switch --flake .#YO
+nixos-rebuild-switch --flake .#YOUR_PREFERRED_HOST_NAME
 ```
 
 > [!TIP]
 > The first thing to look for in **flake.nix** is to pin nixpkgs to latest
 > stable release. If you are confused or have no idea about modularization, you
-> have two options either study this template repository or explore my
+> have can explore my
 > [personal configuration](https://github.com/muhammadtalha-quant/nucleonix).
 
 ## Acknowledgments
