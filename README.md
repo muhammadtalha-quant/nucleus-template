@@ -4,6 +4,7 @@
 
 - [Nucleus Architecture](#nucleus-architecture)
   - [Tech Stack](#tech-stack)
+  - [Tree Structure](#tree-structure)
   - [Getting Started](#getting-started)
     - [Coming to NixOS From Other Distributions](#coming-to-nixos-from-other-distributions)
       - [Clone The Template Repository](#clone-the-template-repository)
@@ -42,6 +43,38 @@ following flakes as core dependencies.
   generation, using stable pkgs.
 - _**nixpkgs-unstable**_: uses rolling release instance of nixpkgs for using
   unstable packages when needed.
+
+## Tree Structure
+
+```text
+ .
+├──  flake.nix # logical control center
+├──  modules
+│   ├──  common # a directory that stores common configuration for all hosts.
+│   │   └──  disko.nix
+│   ├──  features # a directory that stores reusable features for all hosts.
+│   │   ├──  configuration # your OS configuration lives here.
+│   │   │   ├──  configuration.nix # minimal configuration to get started, includes KDE.
+│   │   │   └──  modules
+│   │   │       ├──  bootloader.nix # systemd boot.
+│   │   │       ├──  hardware.nix # host agnostic hardware config lives here.
+│   │   │       ├──  i18n.nix # internationalisation and locales settings.
+│   │   │       ├──  networking.nix # network settings, firewall etc.
+│   │   │       ├──  nh.nix # nix helper config.
+│   │   │       ├──  nix.nix # nix package manager config.
+│   │   │       ├──  security.nix # security configuration.
+│   │   │       ├──  services.nix # necessary services.
+│   │   │       └──  users.nix # user definiton.
+│   │   └──  dotfiles # your user configuration lives here.
+│   │       ├──  home.nix # minimal home.nix to get you started.
+│   │       └──  modules # a directory where dotfiles module will live.
+│   └──  hosts # a directory that stores each host and its hardware specific configuration.
+│       └──  YOUR_PREFERRED_HOST_NAME 
+│           ├──  default.nix # file that declares hardware specific drivers, kernel modules etc.
+│           └──  hardware-configuration.nix # generated configuration by NixOS installer.
+│           
+└── 󰂺 README.md ← You are reading !
+```
 
 ## Getting Started
 
@@ -136,7 +169,9 @@ rm -frv modules/hosts/YOUR_PREFERRED_HOST_NAME/*
 mv /etc/nixos/configuration.nix modules/features/configuration/
 mv /etc/nixos/hardware-configuration.nix modules/hosts/YOUR_PREFERRED_HOST_NAME/
 mv modules/hosts/YOUR_PREFERRED_HOST_NAME modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION
+nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix # remove fileSystems attrs.
 nano flake.nix # remove stuff you don't need, modularize your system slowly.
+nixos-rebuild-switch --flake .#YO
 ```
 
 > [!TIP]
