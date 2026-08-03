@@ -166,6 +166,9 @@ nano flake.nix
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount -f .#YOUR_PREFERRED_HOST_NAME
 ```
 
+> [!IMPORTANT] 
+> If you are on laptop, make sure to check out `modules/features/configuration/modules/services.nix` and enable power management services.
+
 - Installing NixOS
 
   ```bash

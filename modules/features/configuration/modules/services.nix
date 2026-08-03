@@ -1,6 +1,6 @@
 {
     services = {
-        # UNCOMMENT THE FOLLOWING IF YOU ARE ON LAPTOP
+        # UNCOMMENT THE FOLLOWING IF YOU ARE ON LAPTOP, simply remove the # from the following lines, remove this line afterwrds.
         # power-profiles-daemon.enable = true;
         # upower.enable = true;
         fprintd.enable = true;
