@@ -25,6 +25,12 @@ complex frameworks like [**denful/den**](https://github.com/denful/den) and
 approach to configure NixOS using flake, keeping the configuration dendritic and
 modular and also separating reusable parts from host configuration.
 
+> [!CAUTION]
+> This architecture is strictly designed for personal NixOS configurations. For
+> production use, please default to
+> [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or
+> [**denful/den**](https://github.com/denful/den).
+
 ## Tech Stack
 
 The nucleus architecture primarily uses flakes as the main tech stack, with the
