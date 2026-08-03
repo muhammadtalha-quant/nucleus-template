@@ -118,7 +118,7 @@ There are two scenarios for getting started with nucleus architecture:
 ### Coming to NixOS From Other Distributions
 
 > [!NOTE]
-> This guide assumes that you have formatted,mounted,partitioned disks atleast
+> This guide assumes that you have formatted, mounted and partitioned disks at least
 > once using cli.
 
 Inside the minimal iso session of NixOS, run the following commands one by one.
@@ -198,6 +198,10 @@ rm -rf .git # remove repo metadata to make it your own.
 ```
 
 #### Make Changes According to Your Current System State
+
+> [!NOTE] 
+> If you don't want to use disko, well then delete the `common/` directory, remove disko from inputs, remove `diskoConfigurations` block, and remove disko from modules of the host.
+> After that you can skip this command at all `nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix # remove fileSystems attrs`. 
 
 - Prelimenary Steps
 
