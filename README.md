@@ -99,7 +99,7 @@ nix-shell -p git # install git
 git clone https://github.com/muhammadtalha-quant/nucleus-template.git
 exit # exit the git shell
 cd nucleus-template/ # advance into the template repository
-rm rf .git # remove repo metadata, so you make it your own
+rm -rf .git # remove repo metadata, so you make it your own
 ```
 
 #### Make Changes According To Your Liking
@@ -177,7 +177,7 @@ nixos-rebuild-switch --flake .#YO
 > [!TIP]
 > The first thing to look for in **flake.nix** is to pin nixpkgs to latest
 > stable release. If you are confused or have no idea about modularization, you
-> have to options either study this template repository or explore my
+> have two options either study this template repository or explore my
 > [personal configuration](https://github.com/muhammadtalha-quant/nucleonix).
 
 ---
