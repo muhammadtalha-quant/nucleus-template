@@ -54,20 +54,11 @@ following flakes as core dependencies.
 │   │   └──  disko.nix
 │   ├──  features # a directory that stores reusable features for all hosts.
 │   │   ├──  configuration # your OS configuration lives here.
-│   │   │   ├──  configuration.nix # minimal configuration to get started, includes KDE.
-│   │   │   └──  modules
-│   │   │       ├──  bootloader.nix # systemd boot.
-│   │   │       ├──  hardware.nix # host agnostic hardware config lives here.
-│   │   │       ├──  i18n.nix # internationalisation and locales settings.
-│   │   │       ├──  networking.nix # network settings, firewall etc.
-│   │   │       ├──  nh.nix # nix helper config.
-│   │   │       ├──  nix.nix # nix package manager config.
-│   │   │       ├──  security.nix # security configuration.
-│   │   │       ├──  services.nix # necessary services.
-│   │   │       └──  users.nix # user definiton.
+│   │   │   ├──  configuration.nix # main OS entry point
+│   │   │   └──  modules # a directory where your configuration modules will live.
 │   │   └──  dotfiles # your user configuration lives here.
 │   │       ├──  home.nix # minimal home.nix to get you started.
-│   │       └──  modules # a directory where dotfiles module will live.
+│   │       └──  modules # a directory where dotfiles modules will live.
 │   └──  hosts # a directory that stores each host and its hardware specific configuration.
 │       └──  YOUR_PREFERRED_HOST_NAME 
 │           ├──  default.nix # file that declares hardware specific drivers, kernel modules etc.
@@ -75,6 +66,42 @@ following flakes as core dependencies.
 │           
 └── 󰂺 README.md ← You are reading !
 ```
+
+## Core Concepts
+
+Nucleus organizes configuration into three layers:
+
+### Common
+
+Configuration shared by every machine.
+
+Examples:
+
+- disko layout
+- global nix settings
+- shared overlays
+
+### Features
+
+Reusable system capabilities.
+
+Examples:
+
+- desktop environments
+- services
+- development tools
+- applications
+
+### Hosts
+
+Machine-specific configuration.
+
+Examples:
+
+- hardware configuration
+- kernel modules
+- drivers
+- filesystem information
 
 ## Getting Started
 
@@ -141,8 +168,6 @@ sudo nix --experimental-features "nix-command flakes" run github:nix-community/d
   nixos-install --flake .#YOUR_PREFERRED_HOST_NAME --no-root-passwd
   ```
 
----
-
 ### Migrating After Fresh Installation of NixOS
 
 Migration after fresh installation of NixOS is relatively simple.
@@ -179,8 +204,6 @@ nixos-rebuild-switch --flake .#YO
 > stable release. If you are confused or have no idea about modularization, you
 > have two options either study this template repository or explore my
 > [personal configuration](https://github.com/muhammadtalha-quant/nucleonix).
-
----
 
 ## Acknowledgments
 
