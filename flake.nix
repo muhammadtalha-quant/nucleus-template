@@ -47,7 +47,7 @@
             # BY DEFAULT, DISKO IS CONFIGURED FOR EXT4 FS FOR UEFI SYSTEMS (NO DUAL BOOT !)
             # OFCOURSE, CHANGE IT TO FS LAYOUT OF YOUR CHOICE
             storageDevice = "/dev/name";
-            swapSize = "4G"; # size of swap partition
+            swapSize = "8G"; # size of swap partition
 
             # !=== USER CONFIG ===!
             realName = "YOUR_REAL_NAME";
@@ -57,6 +57,10 @@
             configDirectory = "/home/${userName}/EXAMPLE/";
         in
         {
+            diskoConfigurations.${hostName} = import ./modules/common/disko.nix {
+                inherit storageDevice;
+                inherit swapSize;
+            };
             nixosConfigurations.${hostName} = nixpkgs.lib.nixosSystem {
                 inherit system;
                 specialArgs = {
