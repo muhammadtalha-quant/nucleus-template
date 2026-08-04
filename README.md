@@ -69,7 +69,7 @@ following flakes as core dependencies.
 │   │       ├──  home.nix # minimal home.nix to get you started.
 │   │       └──  modules # a directory where dotfiles modules will live.
 │   └──  hosts # a directory that stores each host and its hardware specific configuration.
-│       └──  YOUR_PREFERRED_HOST_NAME 
+│       └──  «hostname»
 │           ├──  default.nix # file that declares hardware specific drivers, kernel modules etc.
 │           └──  hardware-configuration.nix # generated configuration by NixOS installer.
 │           
@@ -128,13 +128,22 @@ Inside the minimal iso session of NixOS, run the following commands one by one.
 
 #### Clone The Template Repository
 
+- Clone the template repository
+  - Enter root mode as suggested in the NixOS Manual.
+  - Since `git` is not available in the minimal ISO of NixOS, we have to
+    temporarily install it.
+  - Clone the repository.
+  - Exit the fake shell, in which git was installed.
+  - Remove the `.git` directory, so that the process doesn't throw errors errors
+    regarding impurity.
+
 ```bash
-sudo -i # enter root mode, as per nixos manual
-nix-shell -p git # install git
+sudo -i 
+nix-shell -p git 
 git clone https://github.com/muhammadtalha-quant/nucleus-template.git
-exit # exit the git shell
-cd nucleus-template/ # advance into the template repository
-rm -rf .git # remove repo metadata, so you make it your own
+exit 
+cd nucleus-template/ 
+rm -rf .git
 ```
 
 #### Preparation and Installation
@@ -153,10 +162,10 @@ nano flake.nix
 
 #### Installing NixOS from Modified Template
 
-- Rename hosts directory to avoid errors.
+- Rename `«hostname»` directory to avoid errors.
 
   ```bash
-  mv modules/hosts/YOUR_PREFERRED_HOST_NAME modules/hosts/HOST_NAME_YOU_SET
+  mv modules/hosts/«hostname» modules/hosts/«preferred_hostname»
   ```
 
 - Run disko to handle formatting, partitioning and mounting of your disk.
@@ -166,7 +175,7 @@ nano flake.nix
 > configuration. Verify your disk layout before running it.
 
 ```bash
-sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount -f .#YOUR_PREFERRED_HOST_NAME
+sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount -f .#«preferred_hostname»
 ```
 
 > [!IMPORTANT]
@@ -178,18 +187,18 @@ sudo nix --experimental-features "nix-command flakes" run github:nix-community/d
   - Go to parent directory of template repo.
   - Move repository to `/mnt` so that it is available after installation.
   - Change directory to repository in the new location.
-  - Generate configuration in the `YOUR_PREFERRED_HOST_NAME` directory.
+  - Generate configuration in the `«preferred_hostname»` directory.
   - Remove the generated `configuration.nix` stub.
   - Install NixOS from the modified template and do not prompt for root
     password.
 
 ```bash
-cd .. # exit the repository 
+cd .. 
 mv nucleus-template /mnt/
 cd /mnt/nucleus-template/
-nixos-generate-config --root . --dir modules/hosts/YOUR_PREFERRED_HOST_NAME/ --no-filesystems
-rm modules/hosts/YOUR_PREFERRED_HOST_NAME/configuration.nix
-nixos-install --flake .#YOUR_PREFERRED_HOST_NAME --no-root-passwd
+nixos-generate-config --root . --dir modules/hosts/«preferred_hostname»/ --no-filesystems
+rm modules/hosts/«preferred_hostname»/configuration.nix
+nixos-install --flake .#«preferred_hostname» --no-root-passwd
 ```
 
 ### Migrating After Fresh Installation of NixOS
@@ -203,10 +212,15 @@ Migration after fresh installation of NixOS is relatively simple.
 > important to skim at least every nix file of the repository.
 
 - Open your default terminal, and paste the following command
+  - Clone the template repository.
+  - Change directory into the repository.
+  - Remove the `.git` directory, so that the process doesn't throw errors errors
+    regarding impurity.
 
 ```bash
-git clone https://github.com/muhammadtalha-quant/nucleus-template.git && cd nucleus-template/
-rm -rf .git # remove repo metadata to make it your own.
+git clone https://github.com/muhammadtalha-quant/nucleus-template.git 
+cd nucleus-template/
+rm -rf .git
 ```
 
 #### Preparation and Building
@@ -227,6 +241,10 @@ Similarly, the correct labels for **swap** and **root** partitions would be
 the GNU Parted Utility is installed and available as `parted`. The following
 commands demonstrate how to add labels to your partitions.
 
+> [!CAUTION]
+> The following commands are according to the
+> [disko.nix](./modules/common/disko.nix) in this repository.
+
 ```bash
 sudo parted /dev/name
 (parted) print 
@@ -243,16 +261,16 @@ sudo parted /dev/name
   - Change ownership of installer generated files so you dont prefix each
     command with sudo.
   - Move the installer generated files to directories defined by template.
-  - Rename `YOUR_PREFERRED_HOST_NAME` directory to the actual host name you set
-    during installation.
+  - Rename `«hostname»` directory to the actual host name you set during
+    installation i-e `«preferred_hostname»`.
 
 ```bash
 rm -frv modules/features/configuration/*
-rm -frv modules/hosts/YOUR_PREFERRED_HOST_NAME/hardware-configuration.nix
-sudo chown -R YOUR_USER_NAME:users /etc/nixos/*
+rm -frv modules/hosts/«hostname»/hardware-configuration.nix
+sudo chown -R «username»:users /etc/nixos/*
 mv /etc/nixos/configuration.nix modules/features/configuration/
-mv /etc/nixos/hardware-configuration.nix modules/hosts/YOUR_PREFERRED_HOST_NAME/
-mv modules/hosts/YOUR_PREFERRED_HOST_NAME modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION
+mv /etc/nixos/hardware-configuration.nix modules/hosts/«preferred_hostname»/
+mv modules/hosts/«hostname» modules/hosts/«preferred_hostname»
 ```
 
 - Do the required changes
@@ -261,19 +279,19 @@ mv modules/hosts/YOUR_PREFERRED_HOST_NAME modules/hosts/HOST_NAME_YOU_SET_IN_INS
   - Open `hardware-configuration.nix` and remove `fileSystems` attribute set to
     avoid conflicts with disko.
   - Open `flake.nix` and replace placeholders with your actual values
-  - Build the OS generation with `nixos-rebuild-switch`
+  - Build the OS generation with `nixos-rebuild switch`
 
 ```bash
 nano modules/features/configuration/configuration.nix
-nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix 
+nano modules/hosts/«preferred_hostname»/hardware-configuration.nix 
 nano flake.nix 
-nixos-rebuild-switch --flake .#YOUR_PREFERRED_HOST_NAME
+nixos-rebuild switch --flake .#«preferred_hostname»
 ```
 
 > [!TIP]
 > The first thing to look for in **flake.nix** is to pin nixpkgs to latest
-> stable release. If you are confused or have no idea about modularization, you
-> have can explore my
+> stable release available. If you are confused or have no idea about
+> modularization, you have can explore my
 > [personal configuration](https://github.com/muhammadtalha-quant/nucleonix).
 
 ## Acknowledgments

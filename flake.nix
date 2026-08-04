@@ -26,20 +26,20 @@
         }@inputs:
         let
             # !=== SYSTEM CONFIG ===!
-            userName = "YOUR_PREFERRED_USER_NAME";
-            hostName = "YOUR_PREFERRED_HOST_NAME";
+            userName = "«username»";
+            hostName = "«hostname»";
             # THE GIVEN HASH RESEMBLES THE PASSWORD '0', AND IS USED FOR BOTH ROOT AND USER ACCOUNT.
             # TO GENERATE A NEW HASH, IN YOUR TERMINAL TYPE THE FOLLOWING COMMAND WITHOUT THE '$'
             # $ mkpasswd -m yescrypt
             # YOU WILL BE PROMPTED FOR PASSWORD, ENTER YOUR DESIRED PASSWORD, AND THEN REPLACE
             # THE FOLLOWING HASH WITH THE GENERATED ONE.
             hashedPassword = "$y$j9T$hbguh04FZh1JSM8nYVXS0.$9yG.bzlFyYT2NcDEKwxPmZuyN1Cz91DMpyewyfQAyM5";
-            timeZone = "YOUR_REGION/YOUR_CITY";
+            timeZone = "«region»/«city»";
             locale = "en_US.UTF-8"; # CHANGE IT IF YOU WANT, ENGLISH IS FINE FOR MANY USERS.
 
             # !=== FLAKE CONFIG ===!
             system = "x86_64-linux";
-            # must match nixpkgs.hostPlatform = lib.mkDefault "<<arch>>";
+            # must match nixpkgs.hostPlatform = lib.mkDefault "«arch»";
             # from the generated hardware-configuration.nix
             pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
 
@@ -50,11 +50,11 @@
             swapSize = "8G"; # size of swap partition
 
             # !=== USER CONFIG ===!
-            realName = "YOUR_REAL_NAME";
+            realName = "«yourname»";
             # your user configuration, that you would like pass down to home manager as well.
 
             # !=== ENVIRONMENT CONFIG ===!
-            configDirectory = "/home/${userName}/EXAMPLE/";
+            configDirectory = "/home/${userName}/«dirname»/";
         in
         {
             diskoConfigurations.${hostName} = import ./modules/common/disko.nix {
