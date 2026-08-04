@@ -46,7 +46,7 @@ following flakes as core dependencies.
 - _**home-manager:**_ used for declaratively configuring dotfiles in native nix.
 - _**disko:**_ used to declaratively automate the formatting, partitioning and mounting of the target disk.
 - _**nixpkgs:**_ uses latest stable instance of nixpkgs for building OS
-  generation, using stable pkgs.
+  generation, using stable packages.
 - _**nixpkgs-unstable:**_ uses rolling release instance of nixpkgs for using
   unstable packages when needed.
 
@@ -201,7 +201,7 @@ rm -rf .git # remove repo metadata to make it your own.
 #### Make Changes According to Your Current System State
 
 > [!NOTE] 
-> If you don't want to use disko, well then delete the `common/` directory, remove disko from inputs, remove `diskoConfigurations` block, and remove disko from modules of the host.
+> If you don't want to use disko, well then delete the `common/` directory, remove disko from inputs, remove `diskoConfigurations` block,  `disko.nixosModules.disko` and `./modules/common/disko.nix` from `flake.nix`
 > After that you can skip this command at all `nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix # remove fileSystems attrs`. 
 
 - Prelimenary Steps
