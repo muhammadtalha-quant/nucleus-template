@@ -6,6 +6,7 @@
   - [Introduction](#introduction)
   - [Goals](#goals)
   - [Scope](#scope)
+  - [Host Management Model](#host-management-model)
   - [Non-goals](#non-goals)
   - [Tech Stack](#tech-stack)
   - [Tree Structure](#tree-structure)
@@ -67,11 +68,44 @@ It can comfortably support configurations with multiple machines, such as:
 - home servers
 - development machines
 
-A setup with fewer than 10 individual hosts should remain straightforward to
-maintain with this architecture.
+Nucleus can technically support many hosts, but it is optimized for personal
+ownership rather than large-scale fleet management. Ideally, a setup with less
+than 10 individual hosts should remain straightforward to maintain with this
+architecture.
 
-For larger deployments or infrastructure-scale management, consider dedicated
-solutions designed for that purpose.
+The architecture assumes that the person maintaining the configuration
+understands the design decisions behind it. For larger teams or deployments
+where many people manage many machines, dedicated infrastructure-oriented
+frameworks may be more appropriate.
+
+> [!CAUTION]
+>
+> - This architecture is strictly designed for personal NixOS configurations.
+> - For production use, please default to
+>   [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or
+>   [**denful/den**](https://github.com/denful/den).
+> - Only **UEFI** systems are supported.
+
+## Host Management Model
+
+Nucleus follows a host-oriented configuration model.
+
+The repository can contain multiple hosts, but each host is treated as an
+individual system with its own requirements and configuration.
+
+When adding a new host:
+
+1. Start from the existing architecture.
+2. Adapt features according to the needs of that machine.
+3. Move host-specific configuration into the corresponding host directory.
+4. Import and maintain the configuration for that host independently.
+
+Nucleus does not aim to be a centralized fleet management system where every
+machine is controlled from a single configuration repository.
+
+While technically possible, managing a large number of hosts from one repository
+requires additional processes and is outside the intended scope of this
+architecture.
 
 ## Non-goals
 
@@ -84,14 +118,6 @@ Nucleus is intentionally not designed to:
 
 Nucleus is designed specifically for personal NixOS configurations where
 simplicity, ownership, and maintainability are the priority.
-
-> [!CAUTION]
->
-> - This architecture is strictly designed for personal NixOS configurations.
-> - For production use, please default to
->   [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or
->   [**denful/den**](https://github.com/denful/den).
-> - Only **UEFI** systems are supported.
 
 ## Tech Stack
 
