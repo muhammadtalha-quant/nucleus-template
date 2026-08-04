@@ -12,18 +12,18 @@
   - [Getting Started](#getting-started)
     - [Coming to NixOS From Other Distributions](#coming-to-nixos-from-other-distributions)
       - [Clone The Template Repository](#clone-the-template-repository)
-      - [Make Changes According To Your Liking](#make-changes-according-to-your-liking)
+      - [Preparation and Installation](#preparation-and-installation)
       - [Installing NixOS from Modified Template](#installing-nixos-from-modified-template)
     - [Migrating After Fresh Installation of NixOS](#migrating-after-fresh-installation-of-nixos)
       - [Clone The Template Repository](#clone-the-template-repository-1)
-      - [Make Changes According to Your Current System State](#make-changes-according-to-your-current-system-state)
+      - [Preparation and Building](#preparation-and-building)
   - [Acknowledgments](#acknowledgments)
   - [LICENSE](#license)
 
 <!--toc:end-->
 
-Nucleus Architecture is a new way to declaratively configure NixOS
-using flakes. It is inspired from dendritic pattern but without using
+Nucleus Architecture is a new way to declaratively configure NixOS using flakes.
+It is inspired from dendritic pattern but without using
 [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or any
 complex frameworks like [**denful/den**](https://github.com/denful/den) and
 [**numtide/flake-utils**](https://github.com/numtide/flake-utils). It is my
@@ -32,10 +32,12 @@ dendritic-like and modular and also separating reusable parts from host
 configuration.
 
 > [!CAUTION]
-> This architecture is strictly designed for personal NixOS configurations. For
-> production use, please default to
-> [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or
-> [**denful/den**](https://github.com/denful/den).
+>
+> - This architecture is strictly designed for personal NixOS configurations.
+> - For production use, please default to
+>   [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or
+>   [**denful/den**](https://github.com/denful/den).
+> - Only **UEFI** systems are supported.
 
 ## Tech Stack
 
@@ -44,7 +46,8 @@ following flakes as core dependencies.
 
 - _**import-tree:**_ used for recursively importing *.nix files
 - _**home-manager:**_ used for declaratively configuring dotfiles in native nix.
-- _**disko:**_ used to declaratively automate the formatting, partitioning and mounting of the target disk.
+- _**disko:**_ used to declaratively automate the formatting, partitioning and
+  mounting of the target disk.
 - _**nixpkgs:**_ uses latest stable instance of nixpkgs for building OS
   generation, using stable packages.
 - _**nixpkgs-unstable:**_ uses rolling release instance of nixpkgs for using
@@ -84,7 +87,6 @@ Configuration shared by every machine.
 Examples:
 
 - disko layout
-- global nix settings
 - shared overlays
 
 ### Features
@@ -119,8 +121,8 @@ There are two scenarios for getting started with nucleus architecture:
 ### Coming to NixOS From Other Distributions
 
 > [!NOTE]
-> This guide assumes that you have formatted, mounted and partitioned disks at least
-> once using cli.
+> This guide assumes that you have formatted, mounted and partitioned disks at
+> least once using cli.
 
 Inside the minimal iso session of NixOS, run the following commands one by one.
 
@@ -135,7 +137,7 @@ cd nucleus-template/ # advance into the template repository
 rm -rf .git # remove repo metadata, so you make it your own
 ```
 
-#### Make Changes According To Your Liking
+#### Preparation and Installation
 
 - Know your disk by running the following command.
 
@@ -167,19 +169,28 @@ nano flake.nix
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount -f .#YOUR_PREFERRED_HOST_NAME
 ```
 
-> [!IMPORTANT] 
-> If you are on laptop, make sure to check out `modules/features/configuration/modules/services.nix` and enable power management services.
+> [!IMPORTANT]
+> If you are on laptop, make sure to check out
+> [services.nix](modules/features/configuration/modules/services.nix) and enable
+> power management services.
 
 - Installing NixOS
+  - Go to parent directory of template repo.
+  - Move repository to `/mnt` so that it is available after installation.
+  - Change directory to repository in the new location.
+  - Generate configuration in the `YOUR_PREFERRED_HOST_NAME` directory.
+  - Remove the generated `configuration.nix` stub.
+  - Install NixOS from the modified template and do not prompt for root
+    password.
 
-  ```bash
-  cd .. # exit the repository 
-  mv nucleus-template /mnt/
-  cd /mnt/nucleus-template/
-  nixos-generate-config --root . --dir modules/hosts/YOUR_PREFERRED_HOST_NAME/ --no-filesystems
-  rm modules/hosts/YOUR_PREFERRED_HOST_NAME/configuration.nix
-  nixos-install --flake .#YOUR_PREFERRED_HOST_NAME --no-root-passwd
-  ```
+```bash
+cd .. # exit the repository 
+mv nucleus-template /mnt/
+cd /mnt/nucleus-template/
+nixos-generate-config --root . --dir modules/hosts/YOUR_PREFERRED_HOST_NAME/ --no-filesystems
+rm modules/hosts/YOUR_PREFERRED_HOST_NAME/configuration.nix
+nixos-install --flake .#YOUR_PREFERRED_HOST_NAME --no-root-passwd
+```
 
 ### Migrating After Fresh Installation of NixOS
 
@@ -189,7 +200,7 @@ Migration after fresh installation of NixOS is relatively simple.
 
 > [!IMPORTANT]
 > Make sure you have `git` installed on your system. Before migrating, it is
-> important to skim atleast every nix file of the repository.
+> important to skim at least every nix file of the repository.
 
 - Open your default terminal, and paste the following command
 
@@ -198,23 +209,64 @@ git clone https://github.com/muhammadtalha-quant/nucleus-template.git && cd nucl
 rm -rf .git # remove repo metadata to make it your own.
 ```
 
-#### Make Changes According to Your Current System State
+#### Preparation and Building
 
-> [!NOTE] 
-> If you don't want to use disko, well then delete the `common/` directory, remove disko from inputs, remove `diskoConfigurations` block,  `disko.nixosModules.disko` and `./modules/common/disko.nix` from `flake.nix`
-> After that you can skip this command at all `nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix # remove fileSystems attrs`. 
+> [!NOTE]
+> Please make sure to edit `disko.nix` and reproduce/declare your exact disk
+> config, that you are running currently otherwise you are going to end up in
+> un-repairable state and you will have to reinstall NixOS if you dont have
+> previous generations. Disko provides lots of templates, check them out
+> [here](https://github.com/nix-community/disko/tree/master/example).
 
-- Prelimenary Steps
+When you are done with disko, now is the time to manually add PARTLABELs using
+parted. In the given [disko.nix](./modules/common/disko.nix), the correct label
+for **ESP** partition would be `disk-my-disk-ESP` as you can see the partition
+is defined as `disk.my-disk.content.partitions.ESP` under `disko.devices`.
+Similarly, the correct labels for **swap** and **root** partitions would be
+`disk-my-disk-swap` and `disk-my-disk-root` respectively.</br> Make sure that
+the GNU Parted Utility is installed and available as `parted`. The following
+commands demonstrate how to add labels to your partitions.
+
+```bash
+sudo parted /dev/name
+(parted) print 
+(parted) name 1 disk-my-disk-ESP
+(parted) name 2 disk-my-disk-swap
+(parted) name 3 disk-my-disk-root
+(parted) print 
+(parted) quit
+```
+
+- Preparing the template
+  - Remove given starter configuration from template
+  - Remove hardware-configuration.nix stub from template
+  - Change ownership of installer generated files so you dont prefix each
+    command with sudo.
+  - Move the installer generated files to directories defined by template.
+  - Rename `YOUR_PREFERRED_HOST_NAME` directory to the actual host name you set
+    during installation.
 
 ```bash
 rm -frv modules/features/configuration/*
-rm -frv modules/hosts/YOUR_PREFERRED_HOST_NAME/*
+rm -frv modules/hosts/YOUR_PREFERRED_HOST_NAME/hardware-configuration.nix
+sudo chown -R YOUR_USER_NAME:users /etc/nixos/*
 mv /etc/nixos/configuration.nix modules/features/configuration/
-nano modules/features/configuration/configuration.nix # import default.nix from your host
 mv /etc/nixos/hardware-configuration.nix modules/hosts/YOUR_PREFERRED_HOST_NAME/
 mv modules/hosts/YOUR_PREFERRED_HOST_NAME modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION
-nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix # remove fileSystems attrs.
-nano flake.nix # remove stuff you don't need, modularize your system slowly.
+```
+
+- Do the required changes
+  - Open `configuration.nix` and replace `hardware-configuration.nix` from its
+    imports list with `../../hosts/${hostName}/default.nix`.
+  - Open `hardware-configuration.nix` and remove `fileSystems` attribute set to
+    avoid conflicts with disko.
+  - Open `flake.nix` and replace placeholders with your actual values
+  - Build the OS generation with `nixos-rebuild-switch`
+
+```bash
+nano modules/features/configuration/configuration.nix
+nano modules/hosts/HOST_NAME_YOU_SET_IN_INSTALLATION/hardware-configuration.nix 
+nano flake.nix 
 nixos-rebuild-switch --flake .#YOUR_PREFERRED_HOST_NAME
 ```
 
