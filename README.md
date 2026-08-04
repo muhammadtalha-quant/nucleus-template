@@ -3,6 +3,10 @@
 <!--toc:start-->
 
 - [Nucleus Architecture](#nucleus-architecture)
+  - [Introduction](#introduction)
+  - [Goals](#goals)
+  - [Scope](#scope)
+  - [Non-goals](#non-goals)
   - [Tech Stack](#tech-stack)
   - [Tree Structure](#tree-structure)
   - [Core Concepts](#core-concepts)
@@ -22,14 +26,64 @@
 
 <!--toc:end-->
 
-Nucleus Architecture is a new way to declaratively configure NixOS using flakes.
-It is inspired from dendritic pattern but without using
-[**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or any
-complex frameworks like [**denful/den**](https://github.com/denful/den) and
-[**numtide/flake-utils**](https://github.com/numtide/flake-utils). It is my
-approach to configure NixOS using flake, keeping the configuration
-dendritic-like and modular and also separating reusable parts from host
-configuration.
+## Introduction
+
+Nucleus Architecture is a lightweight approach to organizing declarative NixOS
+configurations using flakes.
+
+It is inspired by the dendritic pattern, while intentionally avoiding additional
+configuration frameworks such as
+[**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts),
+[**denful/den**](https://github.com/denful/den), or
+[**numtide/flake-utils**](https://github.com/numtide/flake-utils).
+
+Nucleus focuses on keeping configurations modular and understandable by
+separating reusable components from host-specific configuration.
+
+It is my approach to structuring personal NixOS systems using native NixOS
+concepts while maintaining a clear separation between shared configuration,
+reusable features, and individual machines.
+
+## Goals
+
+Nucleus aims to provide:
+
+- A predictable structure for personal NixOS configurations.
+- Clear separation between shared configuration, reusable features, and
+  host-specific details.
+- A reproducible installation and migration workflow.
+- A configuration layout that remains understandable over long periods of time.
+- A practical starting point for users who want to build and maintain their own
+  NixOS systems.
+
+## Scope
+
+Nucleus is designed for personal NixOS configurations.
+
+It can comfortably support configurations with multiple machines, such as:
+
+- personal laptops
+- desktops
+- home servers
+- development machines
+
+A setup with fewer than 10 individual hosts should remain straightforward to
+maintain with this architecture.
+
+For larger deployments or infrastructure-scale management, consider dedicated
+solutions designed for that purpose.
+
+## Non-goals
+
+Nucleus is intentionally not designed to:
+
+- Replace general-purpose Nix configuration frameworks.
+- Provide fleet management or infrastructure deployment features.
+- Solve every possible NixOS configuration scenario.
+- Become a universal standard for organizing NixOS systems.
+
+Nucleus is designed specifically for personal NixOS configurations where
+simplicity, ownership, and maintainability are the priority.
 
 > [!CAUTION]
 >
