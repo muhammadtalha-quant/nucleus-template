@@ -42,11 +42,12 @@ configuration.
 The nucleus architecture primarily uses flakes as the main foundation, with the
 following flakes as core dependencies.
 
-- _**import-tree**_: used for recursively importing *.nix files
-- _**home-manager**_: used for declaratively configuring dotfiles in native nix.
-- _**nixpkgs**_: uses latest stable instance of nixpkgs for building OS
+- _**import-tree:**_ used for recursively importing *.nix files
+- _**home-manager:**_ used for declaratively configuring dotfiles in native nix.
+- _**disko:**_ used to declaratively automate the formatting, partitioning and mounting of the target disk.
+- _**nixpkgs:**_ uses latest stable instance of nixpkgs for building OS
   generation, using stable pkgs.
-- _**nixpkgs-unstable**_: uses rolling release instance of nixpkgs for using
+- _**nixpkgs-unstable:**_ uses rolling release instance of nixpkgs for using
   unstable packages when needed.
 
 ## Tree Structure
