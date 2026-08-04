@@ -22,7 +22,7 @@
 
 <!--toc:end-->
 
-Nucleus Architecture is a new and unusal way to declaratively configure NixOS
+Nucleus Architecture is a new way to declaratively configure NixOS
 using flakes. It is inspired from dendritic pattern but without using
 [**hercules-ci/flake-parts**](https://github.com/hercules-ci/flake-parts) or any
 complex frameworks like [**denful/den**](https://github.com/denful/den) and
