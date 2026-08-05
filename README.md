@@ -10,10 +10,10 @@
   - [Non-goals](#non-goals)
   - [Tech Stack](#tech-stack)
   - [Tree Structure](#tree-structure)
-  - [Core Concepts](#core-concepts)
-    - [Common](#common)
-    - [Features](#features)
-    - [Hosts](#hosts)
+    - [Core Concepts](#core-concepts)
+      - [Common](#common)
+      - [Features](#features)
+      - [Hosts](#hosts)
   - [Getting Started](#getting-started)
     - [Coming to NixOS From Other Distributions](#coming-to-nixos-from-other-distributions)
       - [Clone The Template Repository](#clone-the-template-repository)
@@ -136,31 +136,39 @@ following flakes as core dependencies.
 ## Tree Structure
 
 ```text
- .
-├──  flake.nix # logical control center
-├──  modules
-│   ├──  common # a directory that stores common configuration for all hosts.
-│   │   └──  disko.nix
-│   ├──  features # a directory that stores reusable features for all hosts.
-│   │   ├──  configuration # your OS configuration lives here.
-│   │   │   ├──  configuration.nix # main OS entry point
-│   │   │   └──  modules # a directory where your configuration modules will live.
-│   │   └──  dotfiles # your user configuration lives here.
-│   │       ├──  home.nix # minimal home.nix to get you started.
-│   │       └──  modules # a directory where dotfiles modules will live.
-│   └──  hosts # a directory that stores each host and its hardware specific configuration.
-│       └──  «hostname»
-│           ├──  default.nix # file that declares hardware specific drivers, kernel modules etc.
-│           └──  hardware-configuration.nix # generated configuration by NixOS installer.
-│           
-└── 󰂺 README.md ← You are reading !
+.
+├── flake.nix
+├── LICENSE
+├── modules
+│   ├── common
+│   │   └── disko.nix
+│   ├── features
+│   │   ├── configuration
+│   │   │   ├── configuration.nix
+│   │   │   └── modules
+│   │   │       ├── bootloader.nix
+│   │   │       ├── hardware.nix
+│   │   │       ├── i18n.nix
+│   │   │       ├── networking.nix
+│   │   │       ├── nh.nix
+│   │   │       ├── nix.nix
+│   │   │       ├── security.nix
+│   │   │       ├── services.nix
+│   │   │       └── users.nix
+│   │   └── dotfiles
+│   │       └── home.nix
+│   └── hosts
+│       └── «hostname»
+│           ├── default.nix
+│           └── hardware-configuration.nix
+└── README.md
 ```
 
-## Core Concepts
+### Core Concepts
 
 Nucleus organizes configuration into three layers:
 
-### Common
+#### Common
 
 Configuration shared by every machine.
 
@@ -169,7 +177,7 @@ Examples:
 - disko layout
 - shared overlays
 
-### Features
+#### Features
 
 Reusable system capabilities.
 
@@ -180,7 +188,7 @@ Examples:
 - development tools
 - applications
 
-### Hosts
+#### Hosts
 
 Machine-specific configuration.
 
