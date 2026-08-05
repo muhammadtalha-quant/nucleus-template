@@ -381,4 +381,4 @@ you can contribute in any way you like.
 
 ## LICENSE
 
-Apache-2.0
+BSD 3-Clause License
