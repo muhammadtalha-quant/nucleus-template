@@ -218,12 +218,12 @@ Inside the minimal iso session of NixOS, run the following commands one by one.
 
 - Clone the template repository
   - Enter root mode as suggested in the NixOS Manual.
-  - Since `git` is not available in the minimal ISO of NixOS, we have to
-    temporarily install it.
+  - Since `git` is not available in the minimal ISO of NixOS, we have to install
+    it in a temporary shell.
   - Clone the repository.
-  - Exit the fake shell, in which git was installed.
-  - Remove the `.git` directory, so that the process doesn't throw errors errors
-    regarding impurity.
+  - Exit the shell that provided `git`.
+  - Remove the `.git` directory, so that the process doesn't throw errors
+    regarding impurity[^1].
 
 ```bash
 sudo -i 
@@ -302,8 +302,8 @@ Migration after fresh installation of NixOS is relatively simple.
 - Open your default terminal, and paste the following command
   - Clone the template repository.
   - Change directory into the repository.
-  - Remove the `.git` directory, so that the process doesn't throw errors errors
-    regarding impurity.
+  - Remove the `.git` directory, so that the process doesn't throw errors
+    regarding impurity[^1].
 
 ```bash
 git clone https://github.com/muhammadtalha-quant/nucleus-template.git 
@@ -390,3 +390,8 @@ you can contribute in any way you like.
 ## LICENSE
 
 BSD 3-Clause License
+
+> [^1]: Impurity is Nix flake concept wherein if your flake repository does not
+>     track latest changes then your repository is considered impure and the
+>     build will fail. This error is often thrown during build process when a
+>     new file is not added to repository, although it exists in the directory.
