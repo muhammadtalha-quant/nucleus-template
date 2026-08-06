@@ -23,6 +23,7 @@
       - [Clone The Template Repository](#clone-the-template-repository-1)
       - [Preparation and Building](#preparation-and-building)
   - [Acknowledgments](#acknowledgments)
+  - [Footnotes](#footnotes)
   - [LICENSE](#license)
 
 <!--toc:end-->
@@ -387,11 +388,12 @@ nixos-rebuild switch --flake .#«preferred_hostname»
 **Nucleus Architecture** made with Love++ and AI--. Contributions are welcome,
 you can contribute in any way you like.
 
+## Footnotes
+
+- [^1]: Impurity is Nix flake concept wherein if your flake repository does not track latest changes then your repository is considered impure and the build will fail. This error is often thrown during build process when a new file is not added to repository, although it exists in the directory.
+
+
 ## LICENSE
 
 BSD 3-Clause License
 
-> [^1]: Impurity is Nix flake concept wherein if your flake repository does not
->     track latest changes then your repository is considered impure and the
->     build will fail. This error is often thrown during build process when a
->     new file is not added to repository, although it exists in the directory.
