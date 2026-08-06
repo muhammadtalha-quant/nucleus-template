@@ -390,7 +390,7 @@ you can contribute in any way you like.
 
 ## Footnotes
 
-- [^1]: Impurity is Nix flake concept wherein if your flake repository does not track latest changes then your repository is considered impure and the build will fail. This error is often thrown during build process when a new file is not added to repository, although it exists in the directory.
+[^1]: Impurity is Nix flake concept wherein if your flake repository does not track latest changes then your repository is considered impure and the build will fail. This error is often thrown during build process when a new file is not added to repository, although it exists in the directory.
 
 
 ## LICENSE
