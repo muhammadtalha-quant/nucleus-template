@@ -56,6 +56,9 @@
 
       # !=== ENVIRONMENT CONFIG ===!
       configDirectory = "/home/${userName}/«dirname»/";
+
+      # !=== SYNCTHING CONFIG ===!
+      deviceID = "XXXXXXX-XXXXXXX-XXXXXXX-XXXXXXX-XXXXXXX-XXXXXXX-XXXXXXX-XXXXXXX";
     in
     {
       devShells."x86_64-linux".default = pkgs-unstable.mkShellNoCC {
@@ -82,6 +85,7 @@
           inherit configDirectory;
           inherit locale;
           inherit pkgs-unstable;
+          inherit deviceID;
           inherit inputs;
         };
         modules = [
