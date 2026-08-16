@@ -212,6 +212,7 @@ There are two scenarios for getting started with nucleus architecture:
 > [!NOTE]
 > This guide assumes that you have formatted, mounted and partitioned disks at
 > least once using cli.
+> The given configuration is opinionated, for understanding purposes, once you get the point of it, you can remove all the opinionated stuff.
 
 Inside the minimal iso session of NixOS, run the following commands one by one.
 
