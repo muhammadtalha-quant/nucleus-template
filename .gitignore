@@ -1,0 +1,4 @@
+.direnv
+flake.lock
+.envrc
+# ignored on purpose, coz this is a template repo
